@@ -1,0 +1,16 @@
+export { DashboardIcon } from "./dashboard";
+export { CalendarIcon } from "./calendar";
+export { ClockIcon } from "./clock";
+export { EventIcon } from "./events";
+export { GlobeIcon } from "./globe";
+export { LinkIcon } from "./link";
+export { NotificationIcon } from "./notification";
+export { OffersIcon } from "./offers";
+export { SearchIcon } from "./search";
+export { SearchRightIcon } from "./search-right-icon";
+export { SettingsIcon } from "./settings";
+export { ArrowDownIcon } from "./arrow-down";
+export { ArrowLeftIcon } from "./arrow-left";
+export { ArrowRightIcon } from "./arrow-right";
+export { TickIcon } from "./tick";
+export { LogoIcon } from "./logo";

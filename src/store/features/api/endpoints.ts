@@ -1,0 +1,13 @@
+export const VERIFY_PHONE_NO = '/Otp-Verification/send-otp';
+export const VERIFY_OTP_NO = '/Otp-Verification/verify-otp';
+export const VERIFY_SSN = '/auth-customer/Ssn-verify';
+export const INITIAL_TRANSACTION = '/auth-customer/initial-transaction';
+export const LOGIN_ENDPOINT = '/auth-customer/login';
+export const LOGOUT_ENDPOINT = '/auth-customer/logout';
+export const SIGNUP_ENDPOINT = '/auth-customer/register';
+export const KYC_ENDPOINT = '/kyc/find';
+export const REGISTER_ENDPOINT = '/auth-customer/personal-info';
+export const MAILING_ENDPOINT = '/auth-customer/mailing-info';
+export const TNC_ENDPOINT = '/auth-customer/tnc-verify';
+export const GET_BALANCE = '/account/balance';
+export const GET_CARD_DETAILS = '/account/card-details';
