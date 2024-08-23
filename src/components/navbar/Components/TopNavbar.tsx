@@ -23,8 +23,9 @@ const TopNavbar = ({}: ITopNavbar) => {
               icon={SearchIcon}
               placeholder="Search ShowOps"
               rightIcon={SearchRightIcon}
+              className='border border-accent'
               showRightIcon
-              rightIconClassName="w-8 h-8"
+              rightIconClassName="w-8 h-8 "
             />
           </div>
         </div>

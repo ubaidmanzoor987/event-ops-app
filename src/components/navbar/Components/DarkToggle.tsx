@@ -8,12 +8,13 @@ export function DarkToggle() {
   const isDark = theme === 'dark';
 
   return (
-    <Switch
-      checked={isDark}
-      onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
-      className="flex items-center space-x-2"
-    >
-      <span className="sr-only">Dark mode</span>
-    </Switch>
+    <div className="flex flex-row gap-x-3 items-center ">
+      <Switch
+        checked={isDark}
+        onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
+        className="flex items-center space-x-2"
+      ></Switch>
+      <span className="text-subheadingColor text-sm">Dark Mode</span>
+    </div>
   );
 }

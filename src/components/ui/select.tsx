@@ -24,14 +24,16 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      'focus:outline-none flex h-10 px-3 py-2 w-full items-center justify-between rounded-md  bg-background text-sm shadow-background text-subheadingColor placeholder:text-subheadingColor disabled:cursor-not-allowed disabled:opacity-50',
+      'focus:outline-none flex h-10 px-3 py-2 w-full items-center justify-between rounded-md  bg-accent text-sm shadow-background text-subheadingColor placeholder:text-subheadingColor disabled:cursor-not-allowed disabled:opacity-50',
       className
     )}
     {...props}
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <ArrowDownIcon className={`w-4 h-4 ${iconColor}`} />
+      <ArrowDownIcon
+        className={`w-4 h-4 text-headingColor ml-3 ${iconColor}`}
+      />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ));
@@ -45,7 +47,7 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        'relative z-50 min-w-[8rem] overflow-hidden rounded-md border bg-background text-popover-foreground shadow-md animate-in fade-in-80',
+        'relative z-50 min-w-[8rem] overflow-hidden rounded-md  bg-background text-popover-foreground shadow-md animate-in fade-in-80',
         position === 'popper' && 'translate-y-1',
         className
       )}
@@ -92,7 +94,7 @@ const SelectItem = React.forwardRef<
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <TickIcon className="h-4 w-4" />
+        <TickIcon className="h-4 w-4 text-primary" />
       </SelectPrimitive.ItemIndicator>
     </span>
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>

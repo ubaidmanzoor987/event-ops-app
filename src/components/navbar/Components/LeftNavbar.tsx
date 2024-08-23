@@ -20,6 +20,7 @@ import {
   eventsUrl,
   offersUrl,
 } from '@/configs/constants';
+import { DarkToggle } from './DarkToggle';
 
 interface NavItemProps {
   to: string;
@@ -86,7 +87,7 @@ const LeftNavbar = ({ open, setOpen }: LeftNavbarProps) => {
   return (
     <div
       className={cn(
-        'fixed z-30 h-full bg-background col-span-3 transition-all duration-300 flex-none border-r-2 ',
+        'fixed z-30 h-full bg-background col-span-3 transition-all duration-300 flex-none  ',
         open && 'w-full'
       )}
     >
@@ -108,22 +109,7 @@ const LeftNavbar = ({ open, setOpen }: LeftNavbarProps) => {
                   onClick={() => setOpen(false)}
                 />
               ))}
-            </div>
-          </div>
-          <div className="flex-shrink-0 px-3 ">
-            <div className="flex-shrink-0 px-3 ">
-              <Link
-                href={settingsUrl}
-                className="py-5 flex items-center space-x-4 cursor-pointer"
-              >
-                <SettingsIcon
-                  className="w-5 h-5 cursor-point"
-                  onClick={handleClickSettings}
-                />
-                <p className="font-medium text-base text-headingColor">
-                  Settings
-                </p>
-              </Link>
+              <DarkToggle />
             </div>
           </div>
         </div>

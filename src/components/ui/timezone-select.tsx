@@ -4,6 +4,7 @@ import React from 'react';
 
 import timezones from '@/lib/timezones.json';
 import { ITimezone } from '@/lib/types';
+import { GlobeIcon } from '@/assets/svgs';
 
 import {
   Select,
@@ -12,7 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from './select';
-import { GlobeIcon } from '@/assets/svgs';
 
 interface TimezoneSelectProps {
   onTimezoneChange: (timezone: string) => void;
@@ -43,7 +43,7 @@ const TimezoneSelect: React.FC<TimezoneSelectProps> = ({
         className="bg-accent"
       >
         <div className="flex flex-row gap-x-2">
-          <GlobeIcon className='h-6 w-6' />
+          <GlobeIcon className="h-4 w-4 text-headingColor mt-0.5" />
           <SelectValue placeholder="Select Timezone" />
         </div>
       </SelectTrigger>

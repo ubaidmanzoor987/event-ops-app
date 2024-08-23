@@ -41,7 +41,6 @@
 }
 
 body {
-  background-color: var(--body) !important;
   height: 100%;
 }
 

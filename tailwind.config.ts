@@ -6,7 +6,7 @@ const config: Config = {
     './node_modules/react-tailwindcss-datepicker/dist/index.esm.js',
     './node_modules/tailwind-datepicker-react/dist/**/*.js',
   ],
-  // darkMode: 'selector',
+  darkMode: 'selector',
   theme: {
     screens: {
       xs: '300px',

@@ -28,21 +28,24 @@ import {
   ArrowRightIcon,
   CalendarIcon,
   ClockIcon,
+  LinkIcon,
 } from '@/assets/svgs';
+import DatePicker from '@/components/ui/datepicker';
+import { Textarea } from '@/components/ui/textarea';
 
 interface CreateEventProps {}
 
 const options: IOptions = {
   title: '',
   autoHide: true,
-  todayBtn: true,
+  todayBtn: false,
   clearBtn: false,
   clearBtnText: 'Clear',
   maxDate: new Date('2030-01-01'),
   minDate: new Date('1950-01-01'),
   theme: {
     background: 'bg-background',
-    todayBtn: '',
+    todayBtn: 'bg-calendar-active',
     clearBtn: '',
     icons:
       'hover:bg-transparent active:outline-0 active:!border-0 focus:!outline-0 focus:!ring-0 ',
@@ -50,17 +53,17 @@ const options: IOptions = {
     disabledText: 'text-calendar-text',
     input: '',
     inputIcon: '',
-    selected: '',
+    selected: 'bg-primary hover:bg-primary',
   },
   icons: {
     // () => ReactElement | JSX.Element
     prev: () => (
-      <div className="border-2 border-calendar-text rounded-xl p-1">
+      <div className="border-2 border-calendar-text rounded-lg p-1">
         <ArrowLeftIcon className="fill-none text-red" />
       </div>
     ),
     next: () => (
-      <div className="border-2 border-calendar-text rounded-xl p-1">
+      <div className="border-2 border-calendar-text rounded-lg p-1">
         <ArrowRightIcon className="fill-none text-red" />
       </div>
     ),
@@ -141,9 +144,6 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
                         error={!!form.formState.errors.eventName}
                       />
                     </FormControl>
-                    <FormMessage className="text-destructive">
-                      {form.formState.errors.eventName?.message}
-                    </FormMessage>
                   </div>
                 )}
               />
@@ -157,56 +157,14 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
                 <Label>Date & Time</Label>
               </div>
               <div className="col-span-6 ">
-                <FormField
-                  control={form.control}
+                <Controller
                   name="date"
+                  control={form.control}
                   render={({ field }) => (
-                    <div className="w-full">
-                      <FormControl>
-                        {/* <Datepicker
-                          useRange={false}
-                          value={date}
-                          onChange={handleDateChange}
-                          toggleIcon={() => (
-                            <CalendarIcon className="h-5 w-5 text-headingColor" />
-                          )}
-                          containerClassName={
-                            'custom-date-picker relative bg-accent w-full rounded-lg !text-subHeadingColor'
-                          }
-                          placeholder="Select Date"
-                          inputId={field.name}
-                          inputName={field.name}
-                          popoverDirection="down"
-                          inputClassName={
-                            'relative duration-300 py-2 pr-14 pl-10 w-full !text-base text-subheadingColor rounded-lg placeholder:text-subheadingColor font-base !bg-transparent focus:border-none focus:outline-0  '
-                          }
-                          asSingle
-                          readOnly
-                        /> */}
-                        <div>
-                          <Datepicker
-                            options={options}
-                            onChange={handleDateChange}
-                            show={show}
-                            setShow={handleClose}
-                          >
-                            <div className="...">
-                              <div className="...">
-                                <CalendarIcon />
-                              </div>
-                              <input
-                                type="text"
-                                className="..."
-                                placeholder="Select Date"
-                                // value={date.to}
-                                onFocus={() => setShow(true)}
-                                readOnly
-                              />
-                            </div>
-                          </Datepicker>
-                        </div>
-                      </FormControl>
-                    </div>
+                    <DatePicker
+                      initialValue={field.value}
+                      onDateChange={(date) => field.onChange(date)}
+                    />
                   )}
                 />
               </div>
@@ -219,30 +177,6 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
                       initialTimezone={field.value}
                       onTimezoneChange={(timeZone) => field.onChange(timeZone)}
                     />
-                  )}
-                />
-              </div>
-              <div className="col-span-6 ">
-                <FormField
-                  control={form.control}
-                  name="startTime"
-                  render={({ field }) => (
-                    <div className="w-full">
-                      <FormControl>
-                        <IconInput
-                          {...field}
-                          type="time"
-                          id="startTime"
-                          aria-label="Start Time"
-                          placeholder="Start Time"
-                          error={!!form.formState.errors.startTime}
-                          className="bg-accent "
-                          showIcon
-                          icon={ClockIcon}
-                          iconClassName="text-subheadingColor"
-                        />
-                      </FormControl>
-                    </div>
                   )}
                 />
               </div>
@@ -254,6 +188,20 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
                     <TimePicker
                       initialTime={field.value}
                       onTimeChange={(time) => field.onChange(time)}
+                      placeHolder="Start Time"
+                    />
+                  )}
+                />
+              </div>
+              <div className="col-span-6 ">
+                <Controller
+                  name="endTime"
+                  control={form.control}
+                  render={({ field }) => (
+                    <TimePicker
+                      initialTime={field.value}
+                      onTimeChange={(time) => field.onChange(time)}
+                      placeHolder="End Time"
                     />
                   )}
                 />
@@ -261,47 +209,71 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
             </div>
           </div>
 
-          {/* Profile Picture */}
-          <div className="grid grid-cols-12 items-center">
-            <div className="col-span-3 flex flex-col">
-              <div className="flex flex-row items-center gap-x-1">
-                <p className="font-semibold text-headingColor text-sm">
-                  Your photo
-                </p>
-              </div>
-              <p className="font-normal text-subheadingColor text-sm">
-                This will be displayed on your profile.
-              </p>
+          {/* Event Description */}
+          <div className="w-3/4 items-center ">
+            <div className=" flex flex-row gap-x-6 items-center mt-20">
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <div className="w-full gap-y-2 flex flex-col">
+                    <Label>Description</Label>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        id="description"
+                        placeholder="Add Event description"
+                        error={!!form.formState.errors.description}
+                      />
+                    </FormControl>
+                  </div>
+                )}
+              />
+            </div>
+          </div>
+
+          {/* Event Video Link */}
+          <div className="w-3/4 items-center mt-16">
+            <div className=" flex flex-row gap-x-6 items-center">
+              <FormField
+                control={form.control}
+                name="video"
+                render={({ field }) => (
+                  <div className="w-full gap-y-2 flex flex-col">
+                    <Label>Video</Label>
+                    <FormControl>
+                      <IconInput
+                        {...field}
+                        type="text"
+                        id="video"
+                        placeholder="Add Video Link"
+                        className="bg-accent"
+                        icon={LinkIcon}
+                        iconClassName="h-4 w-4 mt-2 mr-0"
+                        error={!!form.formState.errors.video}
+                      />
+                    </FormControl>
+                  </div>
+                )}
+              />
+            </div>
+          </div>
+
+          {/* Banner Image */}
+          <div className="w-3/4 items-center mt-16">
+            <div className="col-span-12">
+              <Label>Banner Image</Label>
             </div>
             <div className="col-span-9 ">
-              <div className="flex flex-row gap-x-6 w-3/4 ">
+              <div className="flex flex-row gap-x-6 ">
                 <Controller
-                  name="profilePicture"
+                  name="bannerImage"
                   control={form.control}
                   render={({ field }) => {
-                    const fileUrl = field.value
-                      ? URL.createObjectURL(field.value as any)
-                      : '';
                     return (
-                      <>
-                        <Avatar
-                          className={`w-16 h-16 items-center justify-center flex border bg-[#F2F2F2] object-contain`}
-                        >
-                          <AvatarImage
-                            src={fileUrl}
-                            alt="Uploaded file preview"
-                            style={{
-                              objectFit: 'fill',
-                            }}
-                          />
-                          <AvatarFallback>
-                            {form.getValues('eventName')?.slice(0, 1)}{' '}
-                          </AvatarFallback>
-                        </Avatar>
-                        <FileDropzone
-                          onFileUpload={(file) => field.onChange(file)}
-                        />
-                      </>
+                      <FileDropzone
+                        onFileUpload={(file) => field.onChange(file)}
+                      />
                     );
                   }}
                 />
@@ -309,43 +281,14 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
             </div>
           </div>
 
-          <Separator className="mt-6 mb-3" />
-
-          <Separator className="mt-6 mb-3" />
-
-          {/* Timezone */}
-          <div className="grid grid-cols-12 items-center">
-            <div className="col-span-3 ">
-              <p className="font-semibold text-headingColor text-sm">
-                Timezone
-              </p>
-            </div>
-            <div className="col-span-9 ">
-              <div className="flex flex-col gap-y-2 w-3/4 items-center">
-                <Controller
-                  name="timeZone"
-                  control={form.control}
-                  render={({ field }) => (
-                    <CustomTimezoneSelect
-                      initialTimezone={field.value}
-                      onTimezoneChange={(timeZone) => field.onChange(timeZone)}
-                    />
-                  )}
-                />
-              </div>
-            </div>
-          </div>
-
-          <Separator className="mt-6 mb-3" />
-
           {/* Button Handlers */}
-          <div className="w-full flex justify-end">
+          <div className="w-full flex mt-16">
             <div className="w-1/6 flex items-center gap-x-2 ">
-              <Button className="py-5 w-full bg-gray-100 text-gray-400 hover:bg-gray-100">
-                <span className="font-medium text-base">Cancel</span>
-              </Button>
               <Button className="py-5 w-full" type="submit">
-                <span className="font-medium text-base">Save</span>
+                <span className="font-medium text-base">Create event</span>
+              </Button>
+              <Button className="py-5 w-full " variant="ghost">
+                <span className="font-medium text-base">Cancel</span>
               </Button>
             </div>
           </div>

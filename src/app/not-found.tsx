@@ -1,6 +1,6 @@
 export default function NotFound() {
   return (
-    <div className="bg-brand-light w-full h-[100vh] text-xl flex items-center justify-center ">
+    <div className=" w-full h-[100vh] text-xl flex items-center justify-center ">
       404 - Page not found
     </div>
   );

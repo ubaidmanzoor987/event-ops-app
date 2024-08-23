@@ -30,9 +30,9 @@ export const TickIcon = ({
           y2="47.9783"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#6200EE" />
-          <stop offset="0.568499" stopColor="#964DFF" />
-          <stop offset="1" stopColor="#6700FA" />
+          <stop stopColor="#006514d5" />
+          <stop offset="0.568499" stopColor="#006514d5" />
+          <stop offset="1" stopColor="#006514d5" />
         </linearGradient>
       </defs>
     </svg>
