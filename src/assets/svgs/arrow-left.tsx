@@ -14,12 +14,12 @@ export const ArrowLeftIcon = ({
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <rect
+       {/* <rect
         width="16"
         height="16"
         transform="translate(0.5)"
-        fill="white"
-      />
+        fill="currentColor"
+      /> */}
       <path
         fill-rule="evenodd"
         clip-rule="evenodd"

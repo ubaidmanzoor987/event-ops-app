@@ -11,7 +11,8 @@ import { IOptions } from 'tailwind-datepicker-react/types/Options';
 interface DatePickerProps {
   onDateChange: (date: string) => void;
   initialValue?: string;
-  hide?: boolean;
+  show: boolean;
+  setShow: React.Dispatch<boolean>;
 }
 
 const options: IOptions = {
@@ -49,9 +50,13 @@ const options: IOptions = {
   language: 'en',
 };
 
-const DatePicker = ({ initialValue, onDateChange, hide }: DatePickerProps) => {
+const DatePicker = ({
+  initialValue,
+  onDateChange,
+  show,
+  setShow,
+}: DatePickerProps) => {
   const [date, setDate] = useState<string>();
-  const [show, setShow] = useState(false);
 
   const handleDateChange = (selectedDate: Date) => {
     setDate(selectedDate.toDateString());
@@ -71,12 +76,6 @@ const DatePicker = ({ initialValue, onDateChange, hide }: DatePickerProps) => {
     }
   }, [initialValue]);
 
-  useEffect(() => {
-    if (hide === true) {
-      setShow(false);
-    }
-  }, [hide]);
-
   return (
     <Datepicker
       options={options}
@@ -93,9 +92,8 @@ const DatePicker = ({ initialValue, onDateChange, hide }: DatePickerProps) => {
           className="p-2 w-full bg-transparent  placeholder:text-subheadingColor text-subheadingColor focus:outline-none cursor-pointer"
           placeholder="Select Date(s)..."
           value={date}
-          onFocus={() => setShow(true)}
           readOnly
-          onBlur={() => setShow(false)}
+          // onBlur={() => setShow(false)}
         />
         <div className="-mr-1">
           <ArrowDownIcon className="w-4 h-4 text-headingColor" />

@@ -22,7 +22,7 @@ export interface IEvent {
   description: string;
   title: string;
   id?: string;
-  image?: string;
+  image?: string | StaticImageData; 
 }
 
 export interface ITimezone {

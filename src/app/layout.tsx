@@ -24,9 +24,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <StoreProvider>
-        <ThemeProvider attribute="class" enableSystem>
+        <ThemeProvider attribute="class">
           <body className={inter.className}>
-            <Toaster />
+            <Toaster position='top-right' />
             <NextTopLoader
               color="#89FF9FCD"
               initialPosition={0.08}

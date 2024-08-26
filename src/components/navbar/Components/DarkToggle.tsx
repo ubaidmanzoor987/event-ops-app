@@ -13,7 +13,7 @@ export function DarkToggle() {
         checked={isDark}
         onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
         className="flex items-center space-x-2"
-      ></Switch>
+      />
       <span className="text-subheadingColor text-sm">Dark Mode</span>
     </div>
   );

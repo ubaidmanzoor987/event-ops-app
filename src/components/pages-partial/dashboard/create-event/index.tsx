@@ -28,60 +28,14 @@ import {
   ArrowRightIcon,
   CalendarIcon,
   ClockIcon,
+  CloseIcon,
   LinkIcon,
 } from '@/assets/svgs';
 import DatePicker from '@/components/ui/datepicker';
 import { Textarea } from '@/components/ui/textarea';
+import toast from 'react-hot-toast';
 
 interface CreateEventProps {}
-
-const options: IOptions = {
-  title: '',
-  autoHide: true,
-  todayBtn: false,
-  clearBtn: false,
-  clearBtnText: 'Clear',
-  maxDate: new Date('2030-01-01'),
-  minDate: new Date('1950-01-01'),
-  theme: {
-    background: 'bg-background',
-    todayBtn: 'bg-calendar-active',
-    clearBtn: '',
-    icons:
-      'hover:bg-transparent active:outline-0 active:!border-0 focus:!outline-0 focus:!ring-0 ',
-    text: 'text-heading',
-    disabledText: 'text-calendar-text',
-    input: '',
-    inputIcon: '',
-    selected: 'bg-primary hover:bg-primary',
-  },
-  icons: {
-    // () => ReactElement | JSX.Element
-    prev: () => (
-      <div className="border-2 border-calendar-text rounded-lg p-1">
-        <ArrowLeftIcon className="fill-none text-red" />
-      </div>
-    ),
-    next: () => (
-      <div className="border-2 border-calendar-text rounded-lg p-1">
-        <ArrowRightIcon className="fill-none text-red" />
-      </div>
-    ),
-  },
-  datepickerClassNames: 'top-12',
-  defaultDate: new Date('2022-01-01'),
-  language: 'en',
-  disabledDates: [],
-  weekDays: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
-  inputNameProp: 'date',
-  inputIdProp: 'date',
-  inputPlaceholderProp: 'Select Date',
-  inputDateFormatProp: {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  },
-};
 
 const createEventSchema = z.object({
   eventName: z.string().min(1, 'Event name is required'),
@@ -89,10 +43,23 @@ const createEventSchema = z.object({
   timeZone: z.string().min(1, 'Timezone is required'),
   startTime: z.string().min(1, 'Start Time is required'),
   endTime: z.string().min(1, 'End Time is required'),
-  profilePicture: z.string().min(1, 'Profile picture is required'),
-  description: z.string().min(1, 'Description is required'),
-  video: z.string().min(1, 'Video is required'),
-  bannerImage: z.string().min(1, 'Banner Image is required'),
+  profilePicture: z.string().optional(),
+  description: z
+    .string()
+    .min(15, 'Description must be at least 15 characters long')
+    .optional(),
+  video: z
+    .string()
+    .optional()
+    .refine((value) => !value || /^https:\/\/.+$/.test(value), {
+      message: 'Video link must be a valid HTTPS URL',
+    }),
+  bannerImage: z
+    .any()
+    .optional()
+    .refine((file) => !file || (file && file.size > 0), {
+      message: 'Banner Image must be a valid, non-empty file',
+    }),
 });
 
 type FormFields = z.infer<typeof createEventSchema>;
@@ -109,6 +76,30 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
 
   const onSubmit = (vals: FormFields) => {
     // Handle form submission
+    toast.custom((t) => (
+      <div
+        className={`${
+          t.visible ? 'animate-enter' : 'animate-leave'
+        } max-w-md w-full bg-background shadow-lg rounded-lg pointer-events-auto flex ring-2 ring-accent ring-opacity-5`}
+      >
+        <div className="flex-1 w-0 p-4">
+          <div className="flex justify-between items-center mt-1">
+            <p className="text-base font-medium text-headingColor">
+              Emilia Gates
+            </p>
+            <p className=" text-base  font-medium  text-primary">Edit Event</p>
+          </div>
+        </div>
+        <div className="flex ">
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="w-full p-4 flex items-center justify-center "
+          >
+            <CloseIcon className="text-red w-8 h-8" />
+          </button>
+        </div>
+      </div>
+    ));
   };
 
   const handleDateChange = (newValue: Date) => {
@@ -120,12 +111,23 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
     setShow(state);
   };
 
+  console.log({for: form.formState.errors})
   return (
-    <div className="py-4 w-full">
+    <div className="py-4 w-full xl:w-3/5 ">
+      {/* Error Message Display */}
+      {Object.keys(form.formState.errors).length > 0 && (
+        <div className="bg-red-100 text-red-700 p-4 rounded-lg mb-6">
+          {Object.values(form.formState.errors).map((error, index) => (
+            <p key={index} className="text-sm">
+              {error?.message?.toString()}
+            </p>
+          ))}
+        </div>
+      )}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           {/* Event Name */}
-          <div className="w-3/4 items-center ">
+          <div className="w-full items-center ">
             <div className=" flex flex-row gap-x-6 items-center">
               <FormField
                 control={form.control}
@@ -151,12 +153,16 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
           </div>
 
           {/* Date & Time */}
-          <div className="w-3/4 items-center mt-16">
+          <div className="w-full items-center mt-16">
             <div className="grid grid-cols-12 gap-2">
               <div className="col-span-12 ">
                 <Label>Date & Time</Label>
               </div>
-              <div className="col-span-6 ">
+              <div
+                className="col-span-6"
+                onFocus={() => setShow(true)}
+                // onBlur={() => setShow(false)}
+              >
                 <Controller
                   name="date"
                   control={form.control}
@@ -164,6 +170,8 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
                     <DatePicker
                       initialValue={field.value}
                       onDateChange={(date) => field.onChange(date)}
+                      show={show}
+                      setShow={setShow}
                     />
                   )}
                 />
@@ -210,7 +218,7 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
           </div>
 
           {/* Event Description */}
-          <div className="w-3/4 items-center ">
+          <div className="w-full items-center ">
             <div className=" flex flex-row gap-x-6 items-center mt-20">
               <FormField
                 control={form.control}
@@ -233,7 +241,7 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
           </div>
 
           {/* Event Video Link */}
-          <div className="w-3/4 items-center mt-16">
+          <div className="w-full items-center mt-16">
             <div className=" flex flex-row gap-x-6 items-center">
               <FormField
                 control={form.control}
@@ -260,7 +268,7 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
           </div>
 
           {/* Banner Image */}
-          <div className="w-3/4 items-center mt-16">
+          <div className="w-full items-center mt-16">
             <div className="col-span-12">
               <Label>Banner Image</Label>
             </div>
@@ -283,11 +291,15 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
 
           {/* Button Handlers */}
           <div className="w-full flex mt-16">
-            <div className="w-1/6 flex items-center gap-x-2 ">
+            <div className="xl:w-1/6  flex items-center gap-x-2 ">
               <Button className="py-5 w-full" type="submit">
                 <span className="font-medium text-base">Create event</span>
               </Button>
-              <Button className="py-5 w-full " variant="ghost">
+              <Button
+                className="py-5 w-full "
+                variant="ghost"
+                onClick={onSubmit}
+              >
                 <span className="font-medium text-base">Cancel</span>
               </Button>
             </div>

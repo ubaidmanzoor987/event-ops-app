@@ -21,6 +21,8 @@ import {
   offersUrl,
 } from '@/configs/constants';
 import { DarkToggle } from './DarkToggle';
+import { Events } from './Events';
+import { Hamburger } from './Hamburger';
 
 interface NavItemProps {
   to: string;
@@ -87,17 +89,17 @@ const LeftNavbar = ({ open, setOpen }: LeftNavbarProps) => {
   return (
     <div
       className={cn(
-        'fixed z-30 h-full bg-background col-span-3 transition-all duration-300 flex-none  ',
+        'fixed z-30 xl:static h-full bg-background w-0 xl:w-72 transition-all duration-300 flex-none ',
         open && 'w-full'
       )}
     >
       <div className="h-full w-full overflow-hidden ">
         <div className="flex flex-col justify-between h-full min-w-[15rem] 2xl:min-w-[18rem] ">
-          <div className="h-full no-scrollbar px-2 ">
-            <div className="flex justify-start items-center pl-4 ">
-              <LogoIcon className="w-32 h-20 text-headingColor " />
+          <div className="h-full no-scrollbar px-4 ">
+            <div className="flex justify-between items-center ">
+              <LogoIcon className="text-headingColor " />
+              {open && <Hamburger open={open} setOpen={setOpen} />}
             </div>
-            <div className="h-px w-full mb-4" />
             <div className="flex flex-col pb-3 space-y-2">
               {navItems.map(({ to, label, Symbol }) => (
                 <NavItem
@@ -109,7 +111,20 @@ const LeftNavbar = ({ open, setOpen }: LeftNavbarProps) => {
                   onClick={() => setOpen(false)}
                 />
               ))}
+            </div>
+            <div className="w-full mt-12">
+              <Events />
+            </div>
+            <div className="w-full mt-32">
               <DarkToggle />
+            </div>
+            <div className="w-full flex flex-col gap-y-2 mt-2">
+              <p className="text-primary text-sm cursor-pointer">
+                Terms of Use
+              </p>
+              <p className="text-primary text-sm cursor-pointer">
+                Privacy Policy
+              </p>
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { IEvent } from '@/lib/types';
 import { cn } from '@/lib/cn';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import NextImage from '@/components/ui/next-image';
 
 interface EventCardProps {
   event: IEvent | null;
@@ -11,35 +11,35 @@ interface EventCardProps {
 const EventCard = React.forwardRef<HTMLDivElement, EventCardProps>(
   ({ event, className, ...props }, ref) => {
     return (
-      <>
-        <div
-          className={cn(
-            'w-full rounded-2xl bg-white min-h-[90px] p-3 flex flex-row justify-between',
-            className
-          )}
-          {...props}
-          ref={ref}
-        >
-          <div className="flex flex-row gap-x-2">
-            <Avatar
-              className={`w-10 h-10 items-center justify-center flex border `}
-            >
-              <AvatarImage src={event?.image} />
-              <AvatarFallback>
-                {event?.title.slice(0, 1)} {event?.title.slice(2, 1)}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col gap-x-2 ">
-              <p className="text-headingColor text-sm font-semibold  ">
-                {event?.title}
-              </p>
-              <p className="text-headingColor text-sm font-normal break-all">
-                {event?.description}
-              </p>
-            </div>
-          </div>
+      <div
+        className={cn(
+          'w-full rounded-xl grid grid-cols-[auto_1fr] gap-4 items-center mt-2',
+          className
+        )}
+        {...props}
+        ref={ref}
+      >
+        {/* Image Section */}
+        {event?.image && (
+          <NextImage
+            src={event.image}
+            alt={event.title}
+            className="w-12 h-12 rounded-lg object-cover"
+            width={48}
+            height={48}
+          />
+        )}
+
+        {/* Text Section */}
+        <div className="flex flex-col">
+          <p className="text-sm font-normal text-headingColor">
+            {event?.title}
+          </p>
+          <p className="text-base font-medium text-subheadingColor">
+            {event?.description}
+          </p>
         </div>
-      </>
+      </div>
     );
   }
 );

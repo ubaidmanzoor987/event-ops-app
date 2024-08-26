@@ -1,13 +1,16 @@
 import { cn } from '@/lib/cn';
 
-export const LogoIcon = ({ className, ...props }: React.ComponentProps<'svg'>) => {
+export const LogoIcon = ({
+  className,
+  ...props
+}: React.ComponentProps<'svg'>) => {
   return (
     <svg
       width="202"
       height="64"
       viewBox="0 0 202 64"
       fill="currentColor"
-      className={cn('h-6 w-6', className)}
+      className={cn('h-200 w-200', className)}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
