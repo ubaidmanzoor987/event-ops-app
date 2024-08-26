@@ -84,7 +84,10 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
       >
         <div className="flex-1 w-0 p-4">
           <div className="flex justify-between items-center mt-1">
-            <p className="text-base font-medium text-headingColor">
+            <p
+              className="text-base font-medium text-headingColor"
+              data-cy="event-generated"
+            >
               Emilia Gates
             </p>
             <p className=" text-base  font-medium  text-primary">Edit Event</p>
@@ -111,7 +114,7 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
     setShow(state);
   };
 
-  console.log({for: form.formState.errors})
+  console.log({ for: form.formState.errors });
   return (
     <div className="py-4 w-full xl:w-3/5 ">
       {/* Error Message Display */}
@@ -144,6 +147,7 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
                         placeholder="Your Event Name"
                         className="bg-accent"
                         error={!!form.formState.errors.eventName}
+                        data-cy="event-name"
                       />
                     </FormControl>
                   </div>
@@ -197,6 +201,8 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
                       initialTime={field.value}
                       onTimeChange={(time) => field.onChange(time)}
                       placeHolder="Start Time"
+                      dataCy="event-time"
+                      dataCyList="event-time-list"
                     />
                   )}
                 />
@@ -210,6 +216,8 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
                       initialTime={field.value}
                       onTimeChange={(time) => field.onChange(time)}
                       placeHolder="End Time"
+                      dataCy="event-end-time"
+                      dataCyList="event-end-time-list"
                     />
                   )}
                 />
@@ -232,6 +240,7 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
                         id="description"
                         placeholder="Add Event description"
                         error={!!form.formState.errors.description}
+                        data-cy="event-description"
                       />
                     </FormControl>
                   </div>
@@ -259,6 +268,7 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
                         icon={LinkIcon}
                         iconClassName="h-4 w-4 mt-2 mr-0"
                         error={!!form.formState.errors.video}
+                        data-cy="event-video"
                       />
                     </FormControl>
                   </div>
@@ -298,6 +308,7 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
               <Button
                 className="py-5 w-full "
                 variant="ghost"
+                data-cy="event-submit"
                 onClick={onSubmit}
               >
                 <span className="font-medium text-base">Cancel</span>

@@ -38,7 +38,7 @@ const FileDropzone: React.FC<FileDropzoneProps> = ({ onFileUpload }) => {
         'bg-accent rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer w-full'
       )}
     >
-      <input {...getInputProps()} />
+      <input {...getInputProps()} data-cy="event-image" />
       <p className="text-center text-sm text-subheadingColor">
         <span className="font-extrabold cursor-pointer underline">
           Click to upload
