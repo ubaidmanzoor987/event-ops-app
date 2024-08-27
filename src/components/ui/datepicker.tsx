@@ -7,6 +7,7 @@ import {
   CalendarIcon,
 } from '@/assets/svgs';
 import { IOptions } from 'tailwind-datepicker-react/types/Options';
+import useClickOutside from '@/hooks/useClickOutside';
 
 interface DatePickerProps {
   onDateChange: (date: string) => void;
@@ -20,7 +21,7 @@ const options: IOptions = {
   autoHide: true,
   todayBtn: false,
   clearBtn: false,
-  maxDate: new Date('2030-01-01'),
+  maxDate: new Date(),
   minDate: new Date('1950-01-01'),
   theme: {
     background: 'bg-background',
@@ -56,6 +57,9 @@ const DatePicker = ({
   show,
   setShow,
 }: DatePickerProps) => {
+  const ref = useClickOutside(() => {
+    setShow(false);
+  });
   const [date, setDate] = useState<string>();
 
   const handleDateChange = (selectedDate: Date) => {
@@ -77,29 +81,31 @@ const DatePicker = ({
   }, [initialValue]);
 
   return (
-    <Datepicker
-      options={options}
-      onChange={handleDateChange}
-      show={show}
-      setShow={handleClose}
-    >
-      <div className="bg-accent flex items-center rounded-lg px-3  w-full cursor-pointer">
-        <div className="mr-1">
-          <CalendarIcon className="w-4 h-4 text-headingColor" />
+    <div ref={ref} className="relative">
+      <Datepicker
+        options={options}
+        onChange={handleDateChange}
+        show={show}
+        setShow={handleClose}
+      >
+        <div className="bg-accent flex items-center rounded-lg px-3  w-full cursor-pointer">
+          <div className="mr-1">
+            <CalendarIcon className="w-4 h-4 text-headingColor" />
+          </div>
+          <input
+            type="text"
+            className="p-2 w-full bg-transparent  placeholder:text-subheadingColor text-subheadingColor focus:outline-none cursor-pointer"
+            placeholder="Select Date(s)..."
+            value={date}
+            readOnly
+            // onBlur={() => setShow(false)}
+          />
+          <div className="-mr-1">
+            <ArrowDownIcon className="w-4 h-4 text-headingColor" />
+          </div>
         </div>
-        <input
-          type="text"
-          className="p-2 w-full bg-transparent  placeholder:text-subheadingColor text-subheadingColor focus:outline-none cursor-pointer"
-          placeholder="Select Date(s)..."
-          value={date}
-          readOnly
-          // onBlur={() => setShow(false)}
-        />
-        <div className="-mr-1">
-          <ArrowDownIcon className="w-4 h-4 text-headingColor" />
-        </div>
-      </div>
-    </Datepicker>
+      </Datepicker>
+    </div>
   );
 };
 

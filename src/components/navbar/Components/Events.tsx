@@ -1,16 +1,37 @@
 import * as React from 'react';
 import { IEvent } from '@/lib/types';
-import { generateMockEvents } from '@/lib/mocks';
 import EventCard from '@/components/common/EventCard';
+import { Skeleton } from '@/components/ui/skeleton';
 
-const mockedEvents = generateMockEvents(3);
 
 export function Events() {
   const [events, setEvents] = React.useState<IEvent[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    setEvents(mockedEvents);
+    fetchEvents();
   }, []);
+
+  const fetchEvents = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch('/api/events', {
+        method: 'GET',
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log({ result });
+      setEvents(result);
+    } catch (error) {
+      console.error('Error creating event:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-y-3">
@@ -23,6 +44,17 @@ export function Events() {
             <EventCard event={event} />
           </div>
         ))}
+        {isLoading ? (
+          <div className="flex gap-2 col-span-12">
+            <Skeleton className="w-14 h-14" />
+            <div className="flex flex-col gap-1 w-full">
+              <Skeleton className=" h-5" />
+              <Skeleton className=" h-8" />
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

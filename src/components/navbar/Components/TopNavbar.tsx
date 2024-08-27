@@ -6,8 +6,6 @@ import {
   SearchIcon,
   SearchRightIcon,
 } from '@/assets/svgs';
-import { getAuthDataSelector } from '@/store/features/auth/authSelector';
-import { useAppSelector } from '@/store/hooks';
 import NextImage from '@/components/ui/next-image';
 import { ILayoutProps } from '@/lib/types';
 import { IconInput } from '@/components/ui/icon-input';
@@ -19,11 +17,9 @@ interface ITopNavbar extends ILayoutProps {
 }
 
 const TopNavbar = ({ open, setOpen }: ITopNavbar) => {
-  // redux
-  const { user } = useAppSelector(getAuthDataSelector);
 
   return (
-    <div className="mx-2 min-h-[70px] flex w-full items-center justify-between">
+    <div className="px-2 min-h-[70px] flex w-full items-center justify-between">
       <div className="flex items-center gap-x-2 w-3/5">
         {/* Back Icon */}
         <div className="rounded-lg justify-center items-center bg-accent  w-[50px] h-[50px] flex xl:hidden">
@@ -51,7 +47,7 @@ const TopNavbar = ({ open, setOpen }: ITopNavbar) => {
         <div className="py-4 hidden xl:flex">
           <NextImage
             className="w-10 h-10 rounded-full"
-            src={UserImage}
+            src={'/assets/png/user.png'}
             alt="User Profile"
           />
         </div>

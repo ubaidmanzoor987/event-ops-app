@@ -51,7 +51,7 @@ input[type="time"] {
     @apply bg-background text-foreground;
   }
   ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
   }
 
   /* Track */
@@ -61,7 +61,7 @@ input[type="time"] {
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    @apply bg-primary rounded-tl-lg rounded-bl-lg h-[11px];
+    @apply bg-gray-100 rounded-lg h-[11px];
   }
 }
 

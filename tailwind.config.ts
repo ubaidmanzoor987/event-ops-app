@@ -1,12 +1,11 @@
 import type { Config } from 'tailwindcss';
-
 const config: Config = {
   content: [
     './{src,mdx}/**/*.{js,mjs,jsx,ts,tsx,mdx}',
     './node_modules/react-tailwindcss-datepicker/dist/index.esm.js',
     './node_modules/tailwind-datepicker-react/dist/**/*.js',
   ],
-  darkMode: ["class"],
+  darkMode: ['class'],
   theme: {
     screens: {
       xs: '300px',
@@ -58,6 +57,7 @@ const config: Config = {
 
         accent: {
           DEFAULT: 'var(--accent)',
+          background: 'var(--accent-background)',
         },
 
         calendar: {

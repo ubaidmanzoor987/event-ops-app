@@ -115,7 +115,7 @@ const LeftNavbar = ({ open, setOpen }: LeftNavbarProps) => {
             <div className="w-full mt-12">
               <Events />
             </div>
-            <div className="w-full mt-32">
+            <div className="w-full mt-28">
               <DarkToggle />
             </div>
             <div className="w-full flex flex-col gap-y-2 mt-2">

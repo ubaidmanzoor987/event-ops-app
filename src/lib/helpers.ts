@@ -26,3 +26,19 @@ export const formatAmount = (amount: string | number): string => {
   return `$${formattedAmount}`;
 };
 
+
+export const formatFileSize = (bytes: number, decimals: number = 2): string => {
+  if (bytes === 0) return '0 Bytes';
+
+  const k = 1024; // Base unit for conversion
+  const dm = decimals < 0 ? 0 : decimals; // Decimal places
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']; // Units
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k)); // Determine unit index
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]; // Format size
+};
+
+export const fileToNewBlob = (file: File): Blob => {
+  // Create a new Blob from the file's contents
+  return new Blob([file], { type: file.type });
+};

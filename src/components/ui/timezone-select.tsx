@@ -42,9 +42,11 @@ const TimezoneSelect: React.FC<TimezoneSelectProps> = ({
         iconColor="fill-border stroke-border ml-3"
         className="bg-accent"
       >
-        <div className="flex flex-row gap-x-2">
-          <GlobeIcon className="h-4 w-4 text-headingColor mt-0.5" />
-          <SelectValue placeholder="Select Timezone" />
+        <div className="flex w-full items-center flex-row gap-x-2 ">
+          <GlobeIcon className="h-4 w-4 max-w-4 text-headingColor" />
+          <div className='truncate  overflow-hidden'>
+            <SelectValue placeholder="Select Timezone" />
+          </div>
         </div>
       </SelectTrigger>
       <SelectContent className="overflow-y-auto h-[400px]">

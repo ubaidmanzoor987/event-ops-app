@@ -502,7 +502,7 @@
     ]
   },
   {
-    "value": "GMT Standard Time",
+    "value": "GDT Standard Time",
     "abbr": "GDT",
     "offset": 1,
     "isdst": true,

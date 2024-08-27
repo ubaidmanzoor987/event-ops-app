@@ -13,6 +13,7 @@
     --secondary: #040e0082;
 
     --accent: #00200010;
+    --accent-background: #00970016;
 
     --heading: #1d211c;
     --subheading: #020a00a0;
@@ -33,6 +34,7 @@
     --secondary: #f0fdec74;
 
     --accent: #F4F5F312;
+    --accent-background: #70FE8C1B;
 
     --heading: #ffffff;
     --subheading: #f6fef4b0;
@@ -46,6 +48,7 @@
 
 body {
   height: 100%;
+  overflow: hidden;
 }
 
 .custom-date-picker:focus-within > button:first-of-type > svg {

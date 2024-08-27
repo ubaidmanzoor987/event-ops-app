@@ -2,35 +2,16 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
-// import Datepicker, { DateValueType } from 'react-tailwindcss-datepicker';
-
-import Datepicker from 'tailwind-datepicker-react';
-
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField } from '@/components/ui/form';
 import { IconInput } from '@/components/ui/icon-input';
-import { Separator } from '@/components/ui/seperator';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import FileDropzone from '@/components/common/FileDropZone';
 import CustomTimezoneSelect from '@/components/ui/timezone-select';
 import TimePicker from '@/components/ui/time-picker';
-import { IOptions } from 'tailwind-datepicker-react/types/Options';
 
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CalendarIcon,
-  ClockIcon,
-  CloseIcon,
-  LinkIcon,
-} from '@/assets/svgs';
+import { CloseIcon, ErrorIcon, LinkIcon } from '@/assets/svgs';
 import DatePicker from '@/components/ui/datepicker';
 import { Textarea } from '@/components/ui/textarea';
 import toast from 'react-hot-toast';
@@ -38,11 +19,11 @@ import toast from 'react-hot-toast';
 interface CreateEventProps {}
 
 const createEventSchema = z.object({
-  eventName: z.string().min(1, 'Event name is required'),
-  date: z.string().min(1, 'Date is required'),
-  timeZone: z.string().min(1, 'Timezone is required'),
-  startTime: z.string().min(1, 'Start Time is required'),
-  endTime: z.string().min(1, 'End Time is required'),
+  eventName: z.string().min(1, { message: 'Missing event name' }),
+  date: z.string().min(1, { message: 'Date is required' }),
+  timeZone: z.string().min(1, { message: 'Timezone is required' }),
+  startTime: z.string().min(1, { message: 'Start Time is required' }),
+  endTime: z.string().min(1, { message: 'End Time is required' }),
   profilePicture: z.string().optional(),
   description: z
     .string()
@@ -74,8 +55,35 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
     resolver: zodResolver(createEventSchema),
   });
 
-  const onSubmit = (vals: FormFields) => {
+  const onSubmit = async (eventData: FormFields) => {
     // Handle form submission
+    console.log({ eventData });
+    const formData = new FormData();
+
+    // Append form fields
+    Object.keys(eventData).forEach((key) => {
+      const value = eventData[key as keyof FormFields];
+      if (value !== undefined && value !== null) {
+        formData.append(key, value as any); // Type assertion for `value` to `any`
+      }
+    });
+
+    try {
+      const response = await fetch('/api/events', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log({ result });
+    } catch (error) {
+      console.error('Error creating event:', error);
+    }
+
     toast.custom((t) => (
       <div
         className={`${
@@ -111,21 +119,34 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
     setShow(state);
   };
 
-  console.log({for: form.formState.errors})
+  console.log(form.formState.errors);
   return (
-    <div className="py-4 w-full xl:w-3/5 ">
+    <div className="flex flex-col w-full gap-12 xl:gap-16 xl:w-3/5 ">
       {/* Error Message Display */}
       {Object.keys(form.formState.errors).length > 0 && (
-        <div className="bg-red-100 text-red-700 p-4 rounded-lg mb-6">
+        <div className="bg-red-100 text-red-700 p-4 rounded-lg">
           {Object.values(form.formState.errors).map((error, index) => (
-            <p key={index} className="text-sm">
-              {error?.message?.toString()}
-            </p>
+            <div key={'error-' + index} className="flex gap-3">
+              <ErrorIcon />
+              <p className="text-sm">{error?.message?.toString()}</p>{' '}
+            </div>
           ))}
         </div>
       )}
+      <div className="flex flex-col items-start">
+        <p className="font-medium text-2xl text-headingColor">
+          Create an Event
+        </p>
+        <p className="font-medium text-sm text-subheadingColor">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore
+        </p>
+      </div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col gap-12 xl:gap-16 mb-12 xl:mb-16"
+        >
           {/* Event Name */}
           <div className="w-full items-center ">
             <div className=" flex flex-row gap-x-6 items-center">
@@ -153,7 +174,7 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
           </div>
 
           {/* Date & Time */}
-          <div className="w-full items-center mt-16">
+          <div className="w-full items-center">
             <div className="grid grid-cols-12 gap-2">
               <div className="col-span-12 ">
                 <Label>Date & Time</Label>
@@ -219,7 +240,7 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
 
           {/* Event Description */}
           <div className="w-full items-center ">
-            <div className=" flex flex-row gap-x-6 items-center mt-20">
+            <div className=" flex flex-row gap-x-6 items-center ">
               <FormField
                 control={form.control}
                 name="description"
@@ -241,7 +262,7 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
           </div>
 
           {/* Event Video Link */}
-          <div className="w-full items-center mt-16">
+          <div className="w-full items-center">
             <div className=" flex flex-row gap-x-6 items-center">
               <FormField
                 control={form.control}
@@ -268,8 +289,8 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
           </div>
 
           {/* Banner Image */}
-          <div className="w-full items-center mt-16">
-            <div className="col-span-12">
+          <div className="w-full ">
+            <div className="col-span-12 mb-1">
               <Label>Banner Image</Label>
             </div>
             <div className="col-span-9 ">
@@ -281,6 +302,9 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
                     return (
                       <FileDropzone
                         onFileUpload={(file) => field.onChange(file)}
+                        error={
+                          form.formState.errors?.bannerImage?.message as string
+                        }
                       />
                     );
                   }}
@@ -290,16 +314,12 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
           </div>
 
           {/* Button Handlers */}
-          <div className="w-full flex mt-16">
-            <div className="xl:w-1/6  flex items-center gap-x-2 ">
+          <div className="w-full flex">
+            <div className="flex items-center gap-x-2 ">
               <Button className="py-5 w-full" type="submit">
                 <span className="font-medium text-base">Create event</span>
               </Button>
-              <Button
-                className="py-5 w-full "
-                variant="ghost"
-                onClick={onSubmit}
-              >
+              <Button className="py-5 w-full " variant="ghost" type="submit">
                 <span className="font-medium text-base">Cancel</span>
               </Button>
             </div>

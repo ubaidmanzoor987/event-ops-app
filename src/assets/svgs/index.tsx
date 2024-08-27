@@ -15,3 +15,4 @@ export { ArrowRightIcon } from './arrow-right';
 export { TickIcon } from './tick';
 export { LogoIcon } from './logo';
 export { CloseIcon } from './close';
+export { ErrorIcon } from './error';

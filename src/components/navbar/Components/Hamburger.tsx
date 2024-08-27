@@ -8,7 +8,7 @@ interface HamburgerProps {
 export function Hamburger({ open, setOpen }: HamburgerProps) {
   return (
     <div className="group " onClick={() => setOpen(!open)}>
-      <div className="relative flex overflow-hidden items-center justify-center  w-[50px] h-[50px] bg-[#E9F6E9] rounded-lg">
+      <div className="relative flex overflow-hidden items-center justify-center  w-[50px] h-[50px] bg-accent-background rounded-lg">
         <div className="flex flex-col justify-between w-[20px] h-[20px] transform transition-all duration-200 origin-center overflow-hidden">
           <div
             className={cn(
