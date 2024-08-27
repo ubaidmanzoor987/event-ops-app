@@ -41,6 +41,7 @@ const TimezoneSelect: React.FC<TimezoneSelectProps> = ({
       <SelectTrigger
         iconColor="fill-border stroke-border ml-3"
         className="bg-accent"
+        data-cy="event-timezone"
       >
         <div className="flex w-full items-center flex-row gap-x-2 ">
           <GlobeIcon className="h-4 w-4 max-w-4 text-headingColor" />
@@ -51,7 +52,11 @@ const TimezoneSelect: React.FC<TimezoneSelectProps> = ({
       </SelectTrigger>
       <SelectContent className="overflow-y-auto h-[400px]">
         {timezones.map((timezone: ITimezone) => (
-          <SelectItem key={timezone.value} value={timezone.value}>
+          <SelectItem
+            key={timezone.value}
+            value={timezone.value}
+            data-cy="event-timezone-list"
+          >
             <span>{timezone.text}</span>
           </SelectItem>
         ))}

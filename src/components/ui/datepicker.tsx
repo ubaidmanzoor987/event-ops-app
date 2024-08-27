@@ -33,7 +33,7 @@ const options: IOptions = {
     disabledText: 'text-calendar-text',
     input: '',
     inputIcon: '',
-    selected: 'bg-primary hover:bg-primary',
+    selected: 'bg-primary hover:bg-primary cypress-active',
   },
   icons: {
     prev: () => (
@@ -47,7 +47,7 @@ const options: IOptions = {
       </div>
     ),
   },
-  datepickerClassNames: 'top-12',
+  datepickerClassNames: 'top-12 cypress-test',
   language: 'en',
 };
 

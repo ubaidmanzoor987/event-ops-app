@@ -15,6 +15,8 @@ interface TimePickerProps {
   onTimeChange: (time: string) => void;
   initialTime?: string;
   placeHolder?: string;
+  dataCy?: string;
+  dataCyList?: string;
 }
 
 const generateTimeOptions = () => {
@@ -33,6 +35,8 @@ const TimePicker: React.FC<TimePickerProps> = ({
   onTimeChange,
   initialTime,
   placeHolder = 'Select Time',
+  dataCy,
+  dataCyList,
 }) => {
   const [selectedTime, setSelectedTime] = React.useState<string | undefined>(
     initialTime
@@ -51,7 +55,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
 
   return (
     <Select onValueChange={handleChange} value={selectedTime}>
-      <SelectTrigger>
+      <SelectTrigger data-cy={dataCy}>
         <div className="flex flex-row gap-x-2">
           <ClockIcon className="text-headingColor h-4 w-4 mt-0.5" />
           <SelectValue placeholder={placeHolder} />
@@ -59,7 +63,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
       </SelectTrigger>
       <SelectContent className="overflow-y-auto max-h-60">
         {timeOptions.map((time) => (
-          <SelectItem key={time} value={time}>
+          <SelectItem key={time} value={time} data-cy={dataCyList}>
             <span>{time}</span>
           </SelectItem>
         ))}
