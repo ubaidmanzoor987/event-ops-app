@@ -20,6 +20,7 @@ const CustomToast: React.FC<CustomToastProps> = ({ t, title, onClickEdit }) => {
           <p
             className="text-base font-medium text-headingColor"
             data-cy="event-generated"
+            data-testid="event-generated"
           >
             {title}
           </p>

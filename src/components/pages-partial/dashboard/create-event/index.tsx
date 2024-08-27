@@ -2,6 +2,8 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
+import toast from 'react-hot-toast';
+
 import { Form, FormControl, FormField } from '@/components/ui/form';
 import { IconInput } from '@/components/ui/icon-input';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,11 +14,10 @@ import TimePicker from '@/components/ui/time-picker';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { CloseIcon, ErrorIcon, LinkIcon } from '@/assets/svgs';
-import DatePicker from '@/components/ui/datepicker';
 import { Textarea } from '@/components/ui/textarea';
-import toast from 'react-hot-toast';
 import { useCreateEventMutation } from '@/store/features/events/eventsApi';
 import CustomToast from '@/components/common/CustomToast';
+import DatePicker from '@/components/ui/datepicker';
 import Spinner from '@/components/common/Spinner';
 
 interface CreateEventProps {}
@@ -48,12 +49,10 @@ const createEventSchema = z.object({
 type FormFields = z.infer<typeof createEventSchema>;
 
 const CreateEvent: React.FC<CreateEventProps> = () => {
-  // states
   const [show, setShow] = React.useState<boolean>(false);
 
   const [createEvent, { isLoading }] = useCreateEventMutation();
 
-  // form
   const form = useForm<FormFields>({
     resolver: zodResolver(createEventSchema),
     defaultValues: {
@@ -69,10 +68,8 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
   });
 
   const onSubmit = async (eventData: FormFields) => {
-    // Handle form submission
     const formData = new FormData();
 
-    // Append form fields
     Object.keys(eventData).forEach((key) => {
       const value = eventData[key as keyof FormFields];
       if (value !== undefined && value !== null) {
@@ -92,7 +89,6 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
 
   return (
     <div className="flex flex-col w-full gap-12 xl:gap-16 xl:w-3/5 ">
-      {/* Error Message Display */}
       {Object.keys(form.formState.errors).length > 0 && (
         <div className="  mt-2 p-1">
           {Object.values(form.formState.errors).map((error, index) => (
@@ -107,10 +103,18 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
         </div>
       )}
       <div className="flex flex-col items-start">
-        <p className="font-medium text-2xl text-headingColor">
+        <p
+          className="font-medium text-2xl text-headingColor"
+          data-cy="page-title"
+          data-testid="page-title"
+        >
           Create an Event
         </p>
-        <p className="font-medium text-sm text-subheadingColor">
+        <p
+          className="font-medium text-sm text-subheadingColor"
+          data-cy="page-description"
+          data-testid="page-description"
+        >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore
         </p>
@@ -119,8 +123,8 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-12 xl:gap-16 mb-12 xl:mb-16"
+          data-testid="event-form"
         >
-          {/* Event Name */}
           <div className="w-full items-center ">
             <div className=" flex flex-row gap-x-6 items-center">
               <FormField
@@ -139,6 +143,7 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
                         className="bg-accent"
                         error={!!form.formState.errors.eventName}
                         data-cy="event-name"
+                        data-testid="event-name"
                       />
                     </FormControl>
                   </div>
@@ -147,17 +152,12 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
             </div>
           </div>
 
-          {/* Date & Time */}
           <div className="w-full items-center">
             <div className="grid grid-cols-12 gap-2">
               <div className="col-span-12 ">
                 <Label>Date & Time</Label>
               </div>
-              <div
-                className="col-span-6"
-                onFocus={() => setShow(true)}
-                // onBlur={() => setShow(false)}
-              >
+              <div className="col-span-6" onFocus={() => setShow(true)}>
                 <Controller
                   name="date"
                   control={form.control}
@@ -194,6 +194,7 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
                       placeHolder="Start Time"
                       dataCy="event-time"
                       dataCyList="event-time-list"
+                      dataTestId="event-start-time"
                     />
                   )}
                 />
@@ -209,6 +210,7 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
                       placeHolder="End Time"
                       dataCy="event-end-time"
                       dataCyList="event-end-time-list"
+                      dataTestId="event-end-time" 
                     />
                   )}
                 />
@@ -216,7 +218,6 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
             </div>
           </div>
 
-          {/* Event Description */}
           <div className="w-full items-center ">
             <div className=" flex flex-row gap-x-6 items-center ">
               <FormField
@@ -232,6 +233,7 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
                         placeholder="Add Event description"
                         error={!!form.formState.errors.description}
                         data-cy="event-description"
+                        data-testid="event-description"
                       />
                     </FormControl>
                   </div>
@@ -240,7 +242,6 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
             </div>
           </div>
 
-          {/* Event Video Link */}
           <div className="w-full items-center">
             <div className=" flex flex-row gap-x-6 items-center">
               <FormField
@@ -260,6 +261,7 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
                         iconClassName="h-4 w-4 mt-2 mr-0"
                         error={!!form.formState.errors.video}
                         data-cy="event-video"
+                        data-testid="event-video"
                       />
                     </FormControl>
                   </div>
@@ -268,7 +270,6 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
             </div>
           </div>
 
-          {/* Banner Image */}
           <div className="w-full ">
             <div className="col-span-12 mb-1">
               <Label>Banner Image</Label>
@@ -285,6 +286,7 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
                         error={
                           form.formState.errors?.bannerImage?.message as string
                         }
+                        data-testid="event-banner-image"
                       />
                     );
                   }}
@@ -293,18 +295,23 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
             </div>
           </div>
 
-          {/* Button Handlers */}
           <div className="w-full flex">
             <div className="flex items-center gap-x-2 ">
               <Button
                 className="py-5 min-w-[150px] font-medium text-base"
                 type="submit"
                 data-cy="event-submit"
+                data-testid="event-submit"
                 disabled={isLoading}
               >
                 {isLoading ? <Spinner /> : 'Create event'}
               </Button>
-              <Button className="py-5 w-full " variant="ghost" type="submit">
+              <Button
+                className="py-5 w-full "
+                variant="ghost"
+                type="button"
+                data-testid="event-cancel"
+              >
                 <span className="font-medium text-base">Cancel</span>
               </Button>
             </div>

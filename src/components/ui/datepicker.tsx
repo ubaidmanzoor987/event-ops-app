@@ -33,7 +33,7 @@ const options: IOptions = {
     disabledText: 'text-calendar-text',
     input: '',
     inputIcon: '',
-    selected: 'bg-primary hover:bg-primary cypress-active',
+    selected: 'bg-primary hover:bg-primary cypress-active ',
   },
   icons: {
     prev: () => (
@@ -47,7 +47,7 @@ const options: IOptions = {
       </div>
     ),
   },
-  datepickerClassNames: 'top-12 cypress-test',
+  datepickerClassNames: 'top-12 cypress-test ',
   language: 'en',
 };
 
@@ -97,8 +97,6 @@ const DatePicker = ({
             className="p-2 w-full bg-transparent  placeholder:text-subheadingColor text-subheadingColor focus:outline-none cursor-pointer"
             placeholder="Select Date(s)..."
             value={date}
-            readOnly
-            // onBlur={() => setShow(false)}
           />
           <div className="-mr-1">
             <ArrowDownIcon className="w-4 h-4 text-headingColor" />

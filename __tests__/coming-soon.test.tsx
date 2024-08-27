@@ -1,9 +1,11 @@
 // __tests__/ComingSoon.test.tsx
 
+import { expect } from '@jest/globals';
+
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ComingSoon from '@/components/common/ComingSoon'; 
+import ComingSoon from '@/components/common/ComingSoon';
 
 describe('ComingSoon Component', () => {
   it('should render the ComingSoon component with correct text', () => {
@@ -21,6 +23,8 @@ describe('ComingSoon Component', () => {
 
     // Check if the component has the correct CSS classes
     const comingSoonElement = screen.getByTestId('coming-soon');
-    expect(comingSoonElement).toHaveClass('flex justify-center text-3xl font-extrabold items-center pl-4 h-[70vh]');
+    expect(comingSoonElement).toHaveClass(
+      'flex justify-center text-3xl font-extrabold items-center pl-4 h-[70vh]'
+    );
   });
 });

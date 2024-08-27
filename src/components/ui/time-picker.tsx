@@ -17,6 +17,7 @@ interface TimePickerProps {
   placeHolder?: string;
   dataCy?: string;
   dataCyList?: string;
+  dataTestId?: string;
 }
 
 const generateTimeOptions = () => {
@@ -63,7 +64,11 @@ const TimePicker: React.FC<TimePickerProps> = ({
       </SelectTrigger>
       <SelectContent className="overflow-y-auto max-h-60">
         {timeOptions.map((time) => (
-          <SelectItem key={time} value={time} data-cy={dataCyList}>
+          <SelectItem
+            key={time}
+            value={time}
+            data-cy={dataCyList}
+          >
             <span>{time}</span>
           </SelectItem>
         ))}
