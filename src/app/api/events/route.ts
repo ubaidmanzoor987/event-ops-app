@@ -8,11 +8,11 @@ import { IncomingForm } from 'formidable';
 import { Readable } from 'stream';
 
 export interface IMockEvent {
-  id: string; // Unique identifier for the event
-  title: string; // Title of the event
-  description: string; // Description of the event
-  date: string; // Date of the event
-  image: string; // URL or path to the event image
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  image: string;
 }
 
 // Define the path to your events file
@@ -79,18 +79,77 @@ export async function GET() {
   }
 }
 
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const validatedData = createEventSchema.parse(body);
+
+    const events = readEventsFromFile();
+
+    const newEvent: IEvent = {
+      id: faker.string.uuid(),
+      ...validatedData,
+    };
+
+    events.push(newEvent);
+    writeEventsToFile(events);
+
+    return NextResponse.json(newEvent, { status: 201 });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ errors: error.errors }, { status: 400 });
+    }
+    return NextResponse.json(
+      { message: 'Internal Server Error' },
+      { status: 500 }
+    );
+  }
+}
+
 // export async function POST(request: Request) {
+//   const form = new IncomingForm({
+//     uploadDir: path.join(process.cwd(), 'public/uploads'),
+//     keepExtensions: true,
+//   });
+
+//   // Convert ReadableStream to Node.js stream
+//   const stream = Readable.from(await request.text());
+
+//   // Convert the ReadableStream to Node.js IncomingMessage
+//   const req = new Readable({
+//     read() {
+//       this.push(stream.read());
+//       this.push(null);
+//     },
+//   });
+
 //   try {
-//     const body = await request.json();
-//     const validatedData = createEventSchema.parse(body);
+//     const parsedData = await new Promise<{ fields: any; files: any }>(
+//       (resolve, reject) => {
+//         form.parse(req, (err, fields, files) => {
+//           if (err) {
+//             reject(err);
+//           } else {
+//             resolve({ fields, files });
+//           }
+//         });
+//       }
+//     );
 
+//     const { fields, files } = parsedData;
+
+//     // Validate fields
+//     const validatedData = createEventSchema.parse(fields);
+
+//     // Handle file
+//     const bannerImage = files.bannerImage && files.bannerImage[0];
+//     if (bannerImage && bannerImage.filepath) {
+//       validatedData.bannerImage = bannerImage.filepath;
+//     }
+
+//     // Save event data
 //     const events = readEventsFromFile();
-
-//     const newEvent: IEvent = {
-//       id: faker.string.uuid(),
-//       ...validatedData,
-//     };
-
+//     const newEvent = { id: faker.string.uuid(), ...validatedData };
 //     events.push(newEvent);
 //     writeEventsToFile(events);
 
@@ -105,57 +164,3 @@ export async function GET() {
 //     );
 //   }
 // }
-
-export async function POST(request: Request) {
-    const form = new IncomingForm({
-      uploadDir: path.join(process.cwd(), 'public/uploads'),
-      keepExtensions: true,
-    });
-  
-    // Convert ReadableStream to Node.js stream
-    const stream = Readable.from(await request.text());
-  
-    // Convert the ReadableStream to Node.js IncomingMessage
-    const req = new Readable({
-      read() {
-        this.push(stream.read());
-        this.push(null);
-      },
-    });
-  
-    try {
-      const parsedData = await new Promise<{ fields: any; files: any }>((resolve, reject) => {
-        form.parse(req, (err, fields, files) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve({ fields, files });
-          }
-        });
-      });
-  
-      const { fields, files } = parsedData;
-  
-      // Validate fields
-      const validatedData = createEventSchema.parse(fields);
-  
-      // Handle file
-      const bannerImage = files.bannerImage && files.bannerImage[0];
-      if (bannerImage && bannerImage.filepath) {
-        validatedData.bannerImage = bannerImage.filepath;
-      }
-  
-      // Save event data
-      const events = readEventsFromFile();
-      const newEvent = { id: faker.string.uuid(), ...validatedData };
-      events.push(newEvent);
-      writeEventsToFile(events);
-  
-      return NextResponse.json(newEvent, { status: 201 });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return NextResponse.json({ errors: error.errors }, { status: 400 });
-      }
-      return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
-    }
-  }

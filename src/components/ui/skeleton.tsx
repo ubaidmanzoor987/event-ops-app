@@ -9,10 +9,7 @@ const Skeleton = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn(
-      'animate-pulse bg-gray-200 rounded-sm',
-      className
-    )}
+    className={cn('animate-pulse bg-accent rounded-sm', className)}
     {...props}
   />
 ));

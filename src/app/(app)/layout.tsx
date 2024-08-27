@@ -1,6 +1,4 @@
-'use client';
-
-import Navbar from '../navbar/Navbar';
+import Navbar from '@/components/navbar/Navbar';
 import { ILayoutProps } from '@/lib/types';
 
 const AppLayout = ({ children, ...props }: ILayoutProps) => {

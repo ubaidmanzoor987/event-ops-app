@@ -57,7 +57,6 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
 
   const onSubmit = async (eventData: FormFields) => {
     // Handle form submission
-    console.log({ eventData });
     const formData = new FormData();
 
     // Append form fields
@@ -71,7 +70,7 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
     try {
       const response = await fetch('/api/events', {
         method: 'POST',
-        body: formData,
+        body: JSON.stringify(eventData),
       });
 
       if (!response.ok) {
@@ -110,16 +109,6 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
     ));
   };
 
-  const handleDateChange = (newValue: Date) => {
-    setDate(newValue);
-    form.setValue('date', newValue.toDateString());
-  };
-
-  const handleClose = (state: boolean) => {
-    setShow(state);
-  };
-
-  console.log(form.formState.errors);
   return (
     <div className="flex flex-col w-full gap-12 xl:gap-16 xl:w-3/5 ">
       {/* Error Message Display */}

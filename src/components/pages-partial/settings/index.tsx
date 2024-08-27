@@ -1,8 +1,10 @@
 import React from 'react';
-import PartialSettings from '@/components/pages-partial/settings';
+import ComingSoon from '@/components/common/ComingSoon';
 
-const SettingsPage = () => {
-  return <PartialSettings />;
-};
-
-export default SettingsPage;
+export default function PartialSettings() {
+  return (
+    <div className="flex flex-col self-stretch w-full gap-y-4 my-8">
+      <ComingSoon />
+    </div>
+  );
+}

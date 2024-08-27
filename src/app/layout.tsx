@@ -6,7 +6,6 @@ import { Toaster } from 'react-hot-toast';
 
 import '@/styles/globals.css';
 import '@/styles/tailwind.css';
-import AppLayout from '@/components/layouts/AppLayout';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -31,12 +30,12 @@ export default function RootLayout({
             crawlSpeed={200}
             height={3}
             crawl={true}
-            showSpinner={true}
+            showSpinner={false}
             easing="ease"
             speed={2000}
             shadow="0 0 10px #2299DD,0 0 5px #2299DD"
           />
-          <AppLayout>{children}</AppLayout>
+          {children}
         </body>
       </ThemeProvider>
     </html>

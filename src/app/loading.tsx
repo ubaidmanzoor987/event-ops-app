@@ -1,33 +1,11 @@
-import React from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
+import { LogoIcon } from '@/assets/svgs';
 
-const LoadingSkeletons: React.FC = () => {
+export default function Loading() {
   return (
-    <div className="flex flex-col w-full gap-12 xl:gap-16 xl:w-3/5 ">
-      {/* Skeletons for Loading State */}
-      {/* Title */}
-      <Skeleton className="w-2/5 h-[30px] my-4" />
-      <Skeleton className="w-full h-[40px]" />
-
-      {/* Event Name */}
-      <Skeleton className="w-full h-[72px]" />
-
-      {/* Date & Time */}
-      <Skeleton className="w-full h-[120px]" />
-
-      {/* Event Description */}
-      <Skeleton className="w-full h-[120px]" />
-
-      {/* Event Video Link */}
-      <Skeleton className="w-full h-[72px]" />
-
-      {/* Banner Image */}
-      <Skeleton className="w-full h-[152px]" />
-
-      {/* Button Handlers */}
-      <Skeleton className="w-2/5 h-[40px]" />
+    <div className="bg-brand-light w-full h-[100vh] flex items-center justify-center ">
+      <div className="flex justify-start items-center pl-4 animate-zoom">
+        <LogoIcon className="w-32 h-20 text-headingColor " />
+      </div>
     </div>
   );
-};
-
-export default LoadingSkeletons;
+}
