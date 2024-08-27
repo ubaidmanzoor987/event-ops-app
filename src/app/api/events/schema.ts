@@ -1,6 +1,14 @@
 // schema.ts
 import { z } from 'zod';
 
+// List of allowed image types
+const ALLOWED_IMAGE_TYPES = [
+  'image/svg+xml',
+  'image/png',
+  'image/jpeg',
+  'image/gif',
+];
+
 export const createEventSchema = z.object({
   eventName: z.string().min(1, { message: 'Missing event name' }),
   date: z.string().min(1, { message: 'Date is required' }),
@@ -19,11 +27,16 @@ export const createEventSchema = z.object({
       message: 'Video link must be a valid HTTPS URL',
     }),
   bannerImage: z
-    .any()
+    .instanceof(File)
     .optional()
-    .refine((file) => !file || (file && file.size > 0), {
-      message: 'Banner Image must be a valid, non-empty file',
-    }),
+    .refine(
+      (file) =>
+        !file || (file.size > 0 && ALLOWED_IMAGE_TYPES.includes(file.type)),
+      {
+        message:
+          'Banner Image must be a valid non-empty image file (PNG or JPEG)',
+      }
+    ),
 });
 
 export type IEvent = z.infer<typeof createEventSchema> & {

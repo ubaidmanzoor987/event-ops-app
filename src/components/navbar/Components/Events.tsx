@@ -2,36 +2,16 @@ import * as React from 'react';
 import { IEvent } from '@/lib/types';
 import EventCard from '@/components/common/EventCard';
 import { Skeleton } from '@/components/ui/skeleton';
-
+import { useGetTodayEventsQuery } from '@/store/features/events/eventsApi';
 
 export function Events() {
   const [events, setEvents] = React.useState<IEvent[]>([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+
+  const { data, isLoading } = useGetTodayEventsQuery({});
 
   React.useEffect(() => {
-    fetchEvents();
-  }, []);
-
-  const fetchEvents = async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetch('/api/events', {
-        method: 'GET',
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const result = await response.json();
-      console.log({ result });
-      setEvents(result);
-    } catch (error) {
-      console.error('Error creating event:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    if (data) setEvents(data);
+  }, [data]);
 
   return (
     <div className="flex flex-col gap-y-3">

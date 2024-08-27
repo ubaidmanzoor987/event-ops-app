@@ -27,7 +27,7 @@ const TopNavbar = ({ open, setOpen }: ITopNavbar) => {
         </div>
 
         {/* Search Input */}
-        <div className="w-full hidden xl:flex">
+        <div className="w-2/6 hidden xl:flex">
           <IconInput
             icon={SearchIcon}
             placeholder="Search ShowOps"

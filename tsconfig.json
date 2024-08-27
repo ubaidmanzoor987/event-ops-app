@@ -24,6 +24,11 @@
     "types": [
       "cypress",
       "@testing-library/jest-dom"
+    ],
+    "plugins": [
+      {
+        "name": "next"
+      }
     ]
   },
   "include": [

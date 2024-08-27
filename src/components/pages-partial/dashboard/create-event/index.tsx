@@ -15,16 +15,18 @@ import { CloseIcon, ErrorIcon, LinkIcon } from '@/assets/svgs';
 import DatePicker from '@/components/ui/datepicker';
 import { Textarea } from '@/components/ui/textarea';
 import toast from 'react-hot-toast';
+import { useCreateEventMutation } from '@/store/features/events/eventsApi';
+import CustomToast from '@/components/common/CustomToast';
+import Spinner from '@/components/common/Spinner';
 
 interface CreateEventProps {}
 
 const createEventSchema = z.object({
-  eventName: z.string().min(1, { message: 'Missing event name' }),
+  eventName: z.string().min(1, { message: 'Event name is required' }),
   date: z.string().min(1, { message: 'Date is required' }),
   timeZone: z.string().min(1, { message: 'Timezone is required' }),
   startTime: z.string().min(1, { message: 'Start Time is required' }),
   endTime: z.string().min(1, { message: 'End Time is required' }),
-  profilePicture: z.string().optional(),
   description: z
     .string()
     .min(15, 'Description must be at least 15 characters long')
@@ -47,12 +49,23 @@ type FormFields = z.infer<typeof createEventSchema>;
 
 const CreateEvent: React.FC<CreateEventProps> = () => {
   // states
-  const [date, setDate] = React.useState<Date>();
   const [show, setShow] = React.useState<boolean>(false);
+
+  const [createEvent, { isLoading }] = useCreateEventMutation();
 
   // form
   const form = useForm<FormFields>({
     resolver: zodResolver(createEventSchema),
+    defaultValues: {
+      eventName: '',
+      bannerImage: '',
+      date: '',
+      description: '',
+      endTime: '',
+      startTime: '',
+      timeZone: '',
+      video: '',
+    },
   });
 
   const onSubmit = async (eventData: FormFields) => {
@@ -68,67 +81,25 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
     });
 
     try {
-      const response = await fetch('/api/events', {
-        method: 'POST',
-        body: JSON.stringify(eventData),
-      });
+      const response = await createEvent(formData);
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const result = await response.json();
-      console.log({ result });
+      toast.custom((t) => <CustomToast t={t} title={eventData.eventName} />);
     } catch (error) {
       console.error('Error creating event:', error);
+      toast.error('Failed to Create event');
     }
-
-    toast.custom((t) => (
-      <div
-        className={`${
-          t.visible ? 'animate-enter' : 'animate-leave'
-        } max-w-md w-full bg-background shadow-lg rounded-lg pointer-events-auto flex ring-2 ring-accent ring-opacity-5`}
-      >
-        <div className="flex-1 w-0 p-4">
-          <div className="flex justify-between items-center mt-1">
-            <p
-              className="text-base font-medium text-headingColor"
-              data-cy="event-generated"
-            >
-              Emilia Gates
-            </p>
-            <p className=" text-base  font-medium  text-primary">Edit Event</p>
-          </div>
-        </div>
-        <div className="flex ">
-          <button
-            onClick={() => toast.dismiss(t.id)}
-            className="w-full p-4 flex items-center justify-center "
-          >
-            <CloseIcon className="text-red w-8 h-8" />
-          </button>
-        </div>
-      </div>
-    ));
   };
 
-  const handleDateChange = (newValue: Date) => {
-    setDate(newValue);
-    form.setValue('date', newValue.toDateString());
-  };
-
-  const handleClose = (state: boolean) => {
-    setShow(state);
-  };
-
-  console.log({ for: form.formState.errors });
   return (
     <div className="flex flex-col w-full gap-12 xl:gap-16 xl:w-3/5 ">
       {/* Error Message Display */}
       {Object.keys(form.formState.errors).length > 0 && (
-        <div className="bg-red-100 text-red-700 p-4 rounded-lg">
+        <div className="  mt-2 p-1">
           {Object.values(form.formState.errors).map((error, index) => (
-            <div key={'error-' + index} className="flex gap-3">
+            <div
+              key={'error-' + index}
+              className="bg-red-100 text-red-700 p-2 rounded-lg flex gap-3 mt-2 "
+            >
               <ErrorIcon />
               <p className="text-sm">{error?.message?.toString()}</p>{' '}
             </div>
@@ -326,11 +297,12 @@ const CreateEvent: React.FC<CreateEventProps> = () => {
           <div className="w-full flex">
             <div className="flex items-center gap-x-2 ">
               <Button
-                className="py-5 w-full"
+                className="py-5 min-w-[150px] font-medium text-base"
                 type="submit"
                 data-cy="event-submit"
+                disabled={isLoading}
               >
-                <span className="font-medium text-base">Create event</span>
+                {isLoading ? <Spinner /> : 'Create event'}
               </Button>
               <Button className="py-5 w-full " variant="ghost" type="submit">
                 <span className="font-medium text-base">Cancel</span>
