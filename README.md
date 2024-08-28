@@ -25,4 +25,15 @@ yarn dev
 
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:7777](http://localhost:7777) with your browser to see the result.
+
+```test
+npm run test
+# or
+yarn test
+
+
+```Cypress Test
+npm run cypress:open
+# or
+yarn cypress:open

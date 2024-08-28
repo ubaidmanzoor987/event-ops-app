@@ -22,6 +22,20 @@ global.fetch = jest.fn(
     } as unknown as Response) // Casting to `Response` to satisfy TypeScript
 );
 
+// Mock useRouter:
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn().mockReturnValue({
+    push: jest.fn(),
+    replace: jest.fn(),
+    prefetch: jest.fn(),
+    pathname: '/create-event', // Mocked pathname
+    query: {},
+    asPath: '/create-event',
+    route: '/create-event',
+  }),
+  usePathname: jest.fn().mockReturnValue('/create-event'), // Correct mock for usePathname
+}));
+
 // Mock the Redux store and the useCreateEventMutation hook
 const mockStore = configureStore({
   reducer: {
@@ -98,7 +112,7 @@ const renderWithProvider = (ui: React.ReactElement) => {
 describe('Create Event Component', () => {
   // Adding a delay of 1000ms at the start of each test
   beforeEach(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
   });
 
   it('should render the Create Event component with correct text', () => {
@@ -196,6 +210,5 @@ describe('Create Event Component', () => {
     });
 
     fireEvent.click(screen.getByTestId('event-submit'));
-
   });
 });
