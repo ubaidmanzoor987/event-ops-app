@@ -93,9 +93,9 @@ const LeftNavbar = ({ open, setOpen }: LeftNavbarProps) => {
         open && 'w-full'
       )}
     >
-      <div className="h-full w-full overflow-hidden ">
-        <div className="flex flex-col justify-between h-full min-w-[15rem] 2xl:min-w-[18rem] ">
-          <div className="h-full no-scrollbar px-4 ">
+      <div className="h-full w-full overflow-y-auto sm:overflow-hidden ">
+        <div className="flex flex-col h-full min-w-[15rem] 2xl:min-w-[18rem] ">
+          <div className="h-full px-4 ">
             <div className="flex justify-between items-center ">
               <LogoIcon className="text-headingColor " />
               {open && <Hamburger open={open} setOpen={setOpen} />}
@@ -115,14 +115,14 @@ const LeftNavbar = ({ open, setOpen }: LeftNavbarProps) => {
             <div className="w-full mt-12">
               <Events />
             </div>
-            <div className="w-full mt-28">
+            <div className="w-full mt-12 sm:mt-28">
               <DarkToggle />
             </div>
-            <div className="w-full flex flex-col gap-y-2 mt-2">
+            <div className="w-full flex flex-col gap-y-2  sm:mb-0 mt-2">
               <p className="text-primary text-sm cursor-pointer">
                 Terms of Use
               </p>
-              <p className="text-primary text-sm cursor-pointer">
+              <p className="text-primary text-sm cursor-pointer pb-4">
                 Privacy Policy
               </p>
             </div>
